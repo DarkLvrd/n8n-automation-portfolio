@@ -1,0 +1,393 @@
+{
+  "name": "S1 Lead catcher — Pelvane Dental (demo)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pelvane-lead",
+        "options": {}
+      },
+      "id": "692ccd58-ecd0-4361-b33d-f367c39fb18e",
+      "name": "New enquiry from website form",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bp-name",
+              "name": "businessName",
+              "value": "Pelvane Dental",
+              "type": "string"
+            },
+            {
+              "id": "bp-kind",
+              "name": "businessType",
+              "value": "family dental clinic",
+              "type": "string"
+            },
+            {
+              "id": "bp-hours",
+              "name": "openingHours",
+              "value": "Monday to Friday, 9:00 to 17:00",
+              "type": "string"
+            },
+            {
+              "id": "bp-phone",
+              "name": "phone",
+              "value": "+1 555 0100 (demo number)",
+              "type": "string"
+            },
+            {
+              "id": "bp-services",
+              "name": "services",
+              "value": "Check-up and clean: $90. Filling: from $150. Teeth whitening: $350. Root canal: from $700. Dental implant: from $2,500. Same-day emergency visit: $120.",
+              "type": "string"
+            },
+            {
+              "id": "bp-tone",
+              "name": "tone",
+              "value": "Warm, calm and reassuring. Plain words, no jargon. Short paragraphs. Sign off as \"The Pelvane Dental team\".",
+              "type": "string"
+            },
+            {
+              "id": "bp-book",
+              "name": "bookingLink",
+              "value": "https://cal.com/darklvrd-elnvp6/pelvane-new-patient",
+              "type": "string"
+            },
+            {
+              "id": "bp-chat",
+              "name": "frontDeskChatId",
+              "value": "YOUR_TELEGRAM_CHAT_ID",
+              "type": "string"
+            },
+            {
+              "id": "bp-demo",
+              "name": "demoMode",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "bp-inbox",
+              "name": "demoInbox",
+              "value": "you@example.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f65b878c-6ada-47b5-bd50-aceda9212e37",
+      "name": "Business profile",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f-name",
+              "name": "patientName",
+              "value": "={{ ($('New enquiry from website form').item.json.body.data.fields.find(f => f.label === 'Full name') || {}).value || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-email",
+              "name": "patientEmail",
+              "value": "={{ ($('New enquiry from website form').item.json.body.data.fields.find(f => f.label === 'Email') || {}).value || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-phone",
+              "name": "patientPhone",
+              "value": "={{ ($('New enquiry from website form').item.json.body.data.fields.find(f => f.label === 'Phone') || {}).value || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-need",
+              "name": "problem",
+              "value": "={{ ($('New enquiry from website form').item.json.body.data.fields.find(f => f.label === 'What can we help with?') || {}).value || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "f-when",
+              "name": "howSoon",
+              "value": "={{ (f => f && Array.isArray(f.value) ? f.options.filter(o => f.value.includes(o.id)).map(o => o.text).join(', ') : (f ? f.value : ''))($('New enquiry from website form').item.json.body.data.fields.find(x => x.label === 'How soon do you need to be seen?')) }}",
+              "type": "string"
+            },
+            {
+              "id": "f-ins",
+              "name": "insurance",
+              "value": "={{ (f => f && Array.isArray(f.value) ? f.options.filter(o => f.value.includes(o.id)).map(o => o.text).join(', ') : (f ? f.value : ''))($('New enquiry from website form').item.json.body.data.fields.find(x => x.label === 'Do you have dental insurance?')) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "70926cc3-1ef9-4fa0-9a51-c777aa6eee87",
+      "name": "Read the enquiry",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=New enquiry for {{ $json.businessName }}.\n\nName: {{ $json.patientName }}\nHow soon: {{ $json.howSoon }}\nInsurance: {{ $json.insurance }}\nTheir message: \"\"\"{{ $json.problem }}\"\"\"",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are the front desk of {{ $json.businessName }}, a {{ $json.businessType }}.\nOpening hours: {{ $json.openingHours }}. Phone: {{ $json.phone }}.\nServices and prices: {{ $json.services }}\nBooking link: {{ $json.bookingLink }}\nTone: {{ $json.tone }}\n\nFor each enquiry:\n1. urgency: \"emergency\" for severe pain, swelling, bleeding, trauma or a knocked-out tooth; \"soon\" for pain or a broken filling that can wait a few days; \"routine\" for check-ups, cosmetic work and questions.\n2. treatment: the closest service from the price list.\n3. score 1-10: higher when they want to be seen soon, have insurance, or need a high-value treatment.\n4. Write a short, personal reply email (replySubject + replyHtml) in the tone above. Use their first name. For emergencies, tell them to call {{ $json.phone }} now and do NOT send them to the booking link. Otherwise invite them to book at the booking link, written as an HTML link. Never diagnose; never promise a price beyond the price list.\n\nExamples:\n- \"My face is swollen and my tooth is throbbing\" -> urgency emergency, treatment Same-day emergency visit, score 9.\n- \"I would like whiter teeth for my wedding in two months\" -> urgency routine, treatment Teeth whitening, score 7.\n- \"Do you take new patients?\" -> urgency routine, treatment Check-up and clean, score 4."
+        }
+      },
+      "id": "6e2e863e-050f-4356-928a-7ff8ccdfe965",
+      "name": "AI rates the enquiry and drafts a reply",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        944,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "low"
+        }
+      },
+      "id": "c674cefe-8cf9-44c8-baba-5ab0b1d59adb",
+      "name": "AI model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"urgency\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"emergency\",\n        \"soon\",\n        \"routine\"\n      ]\n    },\n    \"treatment\": {\n      \"type\": \"string\",\n      \"description\": \"Most likely service from the price list, or General enquiry\"\n    },\n    \"score\": {\n      \"type\": \"integer\",\n      \"minimum\": 1,\n      \"maximum\": 10,\n      \"description\": \"Lead value and readiness, 10 = book today, high value\"\n    },\n    \"estimatedValue\": {\n      \"type\": \"number\",\n      \"description\": \"Likely first-visit value in dollars, from the price list\"\n    },\n    \"summary\": {\n      \"type\": \"string\",\n      \"description\": \"One line for the front desk\"\n    },\n    \"reasoning\": {\n      \"type\": \"string\",\n      \"description\": \"Why this urgency and score\"\n    },\n    \"replySubject\": {\n      \"type\": \"string\"\n    },\n    \"replyHtml\": {\n      \"type\": \"string\",\n      \"description\": \"Email body as simple HTML paragraphs\"\n    }\n  },\n  \"required\": [\n    \"urgency\",\n    \"treatment\",\n    \"score\",\n    \"estimatedValue\",\n    \"summary\",\n    \"reasoning\",\n    \"replySubject\",\n    \"replyHtml\"\n  ]\n}"
+      },
+      "id": "3c9368d1-389a-41a5-b9ca-22c1f75699ba",
+      "name": "Rating format",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        976,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "email": "={{ $('Read the enquiry').item.json.patientEmail }}",
+        "additionalFields": {
+          "firstName": "={{ $('Read the enquiry').item.json.patientName.split(' ')[0] }}",
+          "lastName": "={{ $('Read the enquiry').item.json.patientName.split(' ').slice(1).join(' ') }}",
+          "leadStatus": "NEW",
+          "message": "={{ $('Read the enquiry').item.json.problem }}",
+          "phoneNumber": "={{ $('Read the enquiry').item.json.patientPhone }}"
+        },
+        "options": {}
+      },
+      "id": "159ba533-894e-414b-a51b-969134c677c1",
+      "name": "Save patient in HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.3,
+      "position": [
+        1632,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "deal",
+        "stage": "qualifiedtobuy",
+        "additionalFields": {
+          "amount": "={{ $('AI rates the enquiry and drafts a reply').item.json.output.estimatedValue }}",
+          "associatedVids": "={{ [String($json.vid)] }}",
+          "description": "=Urgency: {{ $('AI rates the enquiry and drafts a reply').item.json.output.urgency }} | Score: {{ $('AI rates the enquiry and drafts a reply').item.json.output.score }}/10\n{{ $('AI rates the enquiry and drafts a reply').item.json.output.summary }}\nWhy: {{ $('AI rates the enquiry and drafts a reply').item.json.output.reasoning }}",
+          "dealName": "={{ $('Read the enquiry').item.json.patientName }} - {{ $('AI rates the enquiry and drafts a reply').item.json.output.treatment }}"
+        }
+      },
+      "id": "25e4a0c2-4176-497d-a419-cdb79145d2dc",
+      "name": "Open a deal in HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.3,
+      "position": [
+        1872,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Business profile').item.json.demoMode ? $('Business profile').item.json.demoInbox : $('Read the enquiry').item.json.patientEmail }}",
+        "subject": "={{ $('Business profile').item.json.demoMode ? '[DEMO for ' + $('Read the enquiry').item.json.patientEmail + '] ' : '' }}{{ $json.output.replySubject }}",
+        "message": "={{ $json.output.replyHtml }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "={{ $('Business profile').item.json.businessName }}"
+        }
+      },
+      "id": "3e0146a3-536c-4f80-ad03-c6f6077c0d86",
+      "name": "Email the patient",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1792,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Business profile').item.json.frontDeskChatId }}",
+        "text": "={{ ({emergency: '🚨 EMERGENCY', soon: '🟠 Soon', routine: '🟢 Routine'})[$json.output.urgency] || '⚪ New' }} — new enquiry\n\n<b>{{ $('Read the enquiry').item.json.patientName.replace(/[<>&]/g, '') }}</b> · score {{ $json.output.score }}/10\nTreatment: {{ $json.output.treatment.replace(/[<>&]/g, '') }} (about ${{ $json.output.estimatedValue }})\n{{ $json.output.summary.replace(/[<>&]/g, '') }}\n\n📞 {{ $('Read the enquiry').item.json.patientPhone || 'no phone' }}\n✉️ {{ $('Read the enquiry').item.json.patientEmail }}\n\nReply email sent ✅ · Saved in HubSpot ✅",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "b3b21bd1-fcbd-4026-9623-e13c75d04d57",
+      "name": "Alert the front desk",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1648,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Change me to switch industries\nEverything about the business lives in **Business profile**. Swap the name, services, prices, tone and links and the same automation works for a gym, a salon or a law firm.\n\n**demoMode = true** sends every email to our own inbox instead of the patient.",
+        "height": 224,
+        "width": 160,
+        "color": 5
+      },
+      "id": "c6bf2e97-f161-4e0f-a574-4e5420d57f25",
+      "name": "Sticky Note 546f3264",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        432
+      ]
+    }
+  ],
+  "connections": {
+    "New enquiry from website form": {
+      "main": [
+        [
+          {
+            "node": "Business profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Business profile": {
+      "main": [
+        [
+          {
+            "node": "Read the enquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read the enquiry": {
+      "main": [
+        [
+          {
+            "node": "AI rates the enquiry and drafts a reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI rates the enquiry and drafts a reply": {
+      "main": [
+        [
+          {
+            "node": "Save patient in HubSpot",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email the patient",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Alert the front desk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI rates the enquiry and drafts a reply",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rating format": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI rates the enquiry and drafts a reply",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save patient in HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Open a deal in HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
