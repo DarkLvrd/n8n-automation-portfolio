@@ -5,6 +5,10 @@
 **Built by:** DarkLvrd · Dark Century Studios · [darklvrd.github.io](https://darklvrd.github.io)
 **Stack:** n8n · Tally · OpenAI (GPT-5 mini) · HubSpot CRM · Gmail · Telegram · Cal.com
 
+### ▶ [Watch the 30-second demo](demo.mp4)
+
+A real run, start to finish: form → AI → Telegram alert → reply email → HubSpot deal, done in **8.9 seconds**.
+
 ![Telegram alert](screenshots/telegram-alert.png)
 
 ## The problem
@@ -40,6 +44,7 @@ Form ─► n8n ─► Business profile ─► Read answers ─► AI: rate + dr
 | Test enquiry | AI urgency | Score | What happened | Time |
 |---|---|---|---|---|
 | "My molar has been throbbing since last night and my face is starting to swell" | 🚨 emergency | 9/10 | "Call us now" email (no booking link), $120 emergency deal in HubSpot, 🚨 Telegram alert | ~8 s |
+| "I chipped my front tooth playing football an hour ago. It's bleeding a little" | 🚨 emergency | 10/10 | "Call us now" email, $120 deal, 🚨 alert (the run in the demo video) | 8.9 s |
 | "I have a running nose" (off-topic, marked *today, urgent*) | 🟢 routine | 5/10 | AI saw it isn't dental, said so politely, still offered a check-up booking link and explained when to call | ~9 s |
 
 The second test was a deliberate curveball. The form said "urgent", but the AI didn't panic. It read the actual words and handled it the way a sensible receptionist would.
