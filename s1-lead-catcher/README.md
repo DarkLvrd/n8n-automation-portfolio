@@ -5,9 +5,15 @@
 **Built by:** DarkLvrd · Dark Century Studios · [darklvrd.github.io](https://darklvrd.github.io)
 **Stack:** n8n · Tally · OpenAI (GPT-5 mini) · HubSpot CRM · Gmail · Telegram · Cal.com
 
-### ▶ [Watch the 30-second demo](demo.mp4)
+### ▶ [Watch the 19-second demo](demo.mp4) · [vertical 9:16 cut](demo-vertical.mp4)
 
-A real run, start to finish: form → AI → Telegram alert → reply email → HubSpot deal, done in **8.9 seconds**.
+A real run, start to finish, in 19 seconds: form → AI → Telegram alert → reply email → HubSpot deal. The automation itself took **8.9 seconds**.
+
+**Voiceover:** "Missed enquiries? Lost patients. A patient fills in your form. In nine seconds, AI reads it, alerts your front desk, replies in your clinic's voice, and logs the deal in your CRM. Every lead. Caught. For any business."
+
+Shot by shot: a pile-up of unanswered enquiries freezes → logo hit → headline → the real form flying in → the n8n run with a counter → the front-desk alert slamming in → the reply email → the deal in the CRM → industry chips → logo and link. Sound on every cut.
+
+*Music: "House Music" by DJ Frankie Holmes (Jamendo, track 1287214), CC BY. Voice: ElevenLabs. Built with the Dark Century Studios motion system (`~/dcs-motion/videos/s1-lead-catcher-promo`); the CapCut projects are **S1 Lead Catcher - 16x9** and **S1 Lead Catcher - 9x16**. Video is a real captured run, not a mock-up.*
 
 ![Telegram alert](screenshots/telegram-alert.png)
 
@@ -53,6 +59,8 @@ The second test was a deliberate curveball. The form said "urgent", but the AI d
 |---|---|
 | ![email](screenshots/reply-email.png) | ![deal](screenshots/hubspot-deal.png) |
 
+![demo poster](screenshots/demo-poster.jpg)
+
 ## Built to fit any business
 
 Everything specific to the clinic sits in one **Business profile** box: name, services, prices, tone, links. Change that box and the same workflow catches leads for a gym, a salon, a law firm or a real-estate agency.
@@ -70,4 +78,5 @@ A **demo mode** switch sends every email to the builder's own inbox instead of t
 
 - `workflow.json`: the n8n workflow. Import it into n8n, then connect your own HubSpot, Gmail and Telegram accounts and fill in the Business profile.
 - `make_form.py`: builds the Tally form through Tally's API.
+- `demo.mp4` / `demo-vertical.mp4`: the 19 s edit, 1080p60, 16:9 and 9:16.
 - `screenshots/`: the images above.
