@@ -5,9 +5,11 @@
 **Built by:** DarkLvrd · Dark Century Studios · [darklvrd.github.io](https://darklvrd.github.io)
 **Stack:** n8n · Firecrawl · OpenAI (GPT-5 mini) · Gmail · Telegram
 
-### ▶ [Try it live](https://darklvrd.app.n8n.cloud/form/corvell-try)
+### ▶ [Try it live](https://darklvrd.app.n8n.cloud/form/corvell-try) · [Watch the 19-second demo](demo.mp4) · [Vertical cut](demo-vertical.mp4)
 
 Paste the website of any small business. About 30 seconds later you get a brief on that company and a first email written for it. Nothing is sent to anyone.
+
+![Demo poster](screenshots/demo-poster.jpg)
 
 | You paste a website | You get a brief and a first email |
 |---|---|
@@ -54,6 +56,12 @@ I rewrote the rules. The hook now has to be an observation in the sender's voice
 The scores are spread out. The AI ranked a small family practice lower than a firm that does monthly reconciliations for many clients, and it gave a reason each time.
 
 Two of the five emails still said 15 minutes. That's why the last step saves a draft instead of sending.
+
+## The demo video
+
+The [19-second cut](demo.mp4) follows one round end to end: the website read, the brief, the email, then the real run at 97 seconds for five sites with the five Gmail drafts. Everything on screen is from real runs. The [vertical version](demo-vertical.mp4) is a native 9:16 layout for Reels and Shorts.
+
+Music: "Man mountain (Electro House)" by AlexZavesa (Jamendo), CC BY.
 
 ## The public demo
 
