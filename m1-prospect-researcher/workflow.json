@@ -1,0 +1,427 @@
+{
+  "name": "M1 Prospect researcher — Corvell Books (demo)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "6807a036-d2bf-48e4-8d5e-306d448ccdd7",
+      "name": "Start a research run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cp-name",
+              "name": "product",
+              "value": "Corvell Books. Bookkeeping software for small practices: bank reconciliation, VAT and Making Tax Digital returns, a client portal and monthly reports. 39 pounds per month per practice, unlimited clients.",
+              "type": "string"
+            },
+            {
+              "id": "cp-icp",
+              "name": "idealCustomer",
+              "value": "Small bookkeeping and accounting practices with 5 to 50 clients and one to five staff, still working in spreadsheets or a mix of QuickBooks and Excel.",
+              "type": "string"
+            },
+            {
+              "id": "cp-pain",
+              "name": "painPoints",
+              "value": "Re-keying bank transactions by hand. Chasing clients for receipts. Month-end crunch. No time to sell. Clients asking for numbers they cannot produce quickly.",
+              "type": "string"
+            },
+            {
+              "id": "cp-offer",
+              "name": "offer",
+              "value": "a 20-minute call to walk through their current month-end process and show Corvell running on their own data",
+              "type": "string"
+            },
+            {
+              "id": "cp-sender",
+              "name": "sender",
+              "value": "DarkLvrd, founder of Corvell Books",
+              "type": "string"
+            },
+            {
+              "id": "cp-tone",
+              "name": "tone",
+              "value": "Direct and warm. Short sentences. British English. No hype. Never more than 120 words.",
+              "type": "string"
+            },
+            {
+              "id": "cp-inbox",
+              "name": "demoInbox",
+              "value": "you@example.com",
+              "type": "string"
+            },
+            {
+              "id": "cp-chat",
+              "name": "telegramChatId",
+              "value": "YOUR_TELEGRAM_CHAT_ID",
+              "type": "string"
+            },
+            {
+              "id": "cp-demo",
+              "name": "demoMode",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "da9e6614-89c3-4074-9444-611f3bbd770b",
+      "name": "Corvell Books profile",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prospects = [\n  { company: 'MVP Bookkeeping', website: 'https://mvpbookkeeping.co.uk', region: 'Cornwall, UK', role: 'the practice owner' },\n  { company: 'LVS Bookkeeping', website: 'https://lvsbookkeeping.co.uk', region: 'Wimborne, UK', role: 'the founder' },\n  { company: 'A Touch Bookkeeping', website: 'https://atouchbookkeeping.co.uk', region: 'Witham, Essex, UK', role: 'the owner' },\n  { company: 'Ledger Leaf Ltd', website: 'https://www.ledgerleafltd.com', region: 'Knaresborough, UK', role: 'the founder' },\n  { company: 'Fair and Square Bookkeeping', website: 'https://www.fairandsquarebookkeeping.com', region: 'United States', role: 'the owner' }\n];\n\nconst profile = $('Corvell Books profile').first().json;\n\nreturn prospects.map(function (p) {\n  return { json: Object.assign({}, profile, p) };\n});"
+      },
+      "id": "c920e981-3e39-4f7f-b5ff-3e483b2c216d",
+      "name": "Prospect list (edit me)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "scrape",
+        "url": "={{ $json.website }}",
+        "scrapeOptions": {
+          "options": {
+            "formats": {
+              "format": [
+                {}
+              ]
+            },
+            "excludeTags": {
+              "items": [
+                {
+                  "tag": "script"
+                },
+                {
+                  "tag": "style"
+                }
+              ]
+            },
+            "headers": {},
+            "onlyMainContent": false
+          }
+        },
+        "requestOptions": {}
+      },
+      "id": "e6a5f3df-8586-44b5-9560-c0b594613415",
+      "name": "Read the website",
+      "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
+      "typeVersion": 1,
+      "position": [
+        720,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const wanted = ['about', 'our-story', 'meet', 'services', 'what-we-do', 'how-it-works', 'pricing'];\nconst out = [];\n\nfor (const item of $input.all()) {\n  const data = item.json.data || {};\n  const meta = data.metadata || {};\n  const homeUrl = meta.sourceURL || meta.url || item.json.website || '';\n  const homeText = data.markdown || '';\n  const allLinks = Array.isArray(data.links) ? data.links.slice() : [];\n\n  const parts = homeText.split('](');\n  for (let i = 1; i < parts.length; i++) {\n    const inside = parts[i].split(')')[0];\n    if (inside && inside.indexOf('http') === 0) allLinks.push(inside);\n  }\n\n  let secondUrl = '';\n  let bestRank = 999;\n  for (const link of allLinks) {\n    const lower = String(link).toLowerCase();\n    for (let w = 0; w < wanted.length; w++) {\n      if (lower.indexOf('/' + wanted[w]) > -1 && w < bestRank) {\n        bestRank = w;\n        secondUrl = link;\n      }\n    }\n  }\n  if (secondUrl === homeUrl) secondUrl = '';\n\n  out.push({ json: {\n    company: item.json.company,\n    website: item.json.website,\n    region: item.json.region,\n    role: item.json.role,\n    product: item.json.product,\n    idealCustomer: item.json.idealCustomer,\n    painPoints: item.json.painPoints,\n    offer: item.json.offer,\n    sender: item.json.sender,\n    tone: item.json.tone,\n    demoInbox: item.json.demoInbox,\n    telegramChatId: item.json.telegramChatId,\n    homeUrl: homeUrl,\n    homeText: homeText,\n    secondUrl: secondUrl || homeUrl\n  } });\n}\n\nreturn out;"
+      },
+      "id": "d0f00f02-8ce6-4e4e-9e6e-659941f5f56c",
+      "name": "Find the about or services page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "scrape",
+        "url": "={{ $json.secondUrl }}",
+        "scrapeOptions": {
+          "options": {
+            "formats": {
+              "format": [
+                {}
+              ]
+            },
+            "headers": {}
+          }
+        },
+        "requestOptions": {}
+      },
+      "id": "0ee8eae9-16d0-4e2f-8b5d-6d0f2cade0b4",
+      "name": "Read the second page",
+      "type": "@mendable/n8n-nodes-firecrawl.firecrawl",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const picked = $('Find the about or services page').all();\nconst scraped = $input.all();\nconst nl = String.fromCharCode(10, 10);\nconst out = [];\n\nfor (let i = 0; i < picked.length; i++) {\n  const a = picked[i].json;\n  const b = scraped[i] && scraped[i].json ? (scraped[i].json.data || {}) : {};\n  const bMeta = b.metadata || {};\n  const bText = b.markdown || '';\n  const extra = bText && bMeta.sourceURL !== a.homeUrl ? bText : '';\n  const siteText = (a.homeText + nl + '--- SECOND PAGE ---' + nl + extra).slice(0, 7000);\n\n  out.push({ json: {\n    company: a.company,\n    website: a.website,\n    region: a.region,\n    role: a.role,\n    product: a.product,\n    idealCustomer: a.idealCustomer,\n    painPoints: a.painPoints,\n    offer: a.offer,\n    sender: a.sender,\n    tone: a.tone,\n    demoInbox: a.demoInbox,\n    telegramChatId: a.telegramChatId,\n    pagesRead: extra ? 2 : 1,\n    siteText: siteText\n  } });\n}\n\nreturn out;"
+      },
+      "id": "a5fc4717-e739-4fbb-a635-01203411c69e",
+      "name": "Combine the page text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Prospect: {{ $json.company }}, {{ $json.region }}. Website: {{ $json.website }}. Recipient: {{ $json.role }}.\n\nHere is the text of their website:\n\"\"\"\n{{ $json.siteText }}\n\"\"\"\n\nWrite the brief and the first email. Follow the rules in your system message exactly.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You sell Corvell Books ({{ $json.product }}) to small bookkeeping practices. Ideal customer: {{ $json.idealCustomer }}. Pains they feel: {{ $json.painPoints }}. You are {{ $json.sender }}. Your recipient is {{ $json.role }} and you have no name for them, so address them by role.\n\nBRIEF RULES\n1. Use only what the site says. If the site does not say something, write not stated.\n2. hook: one sentence in YOUR voice about THEM, built on a specific detail from their site. Quote a short phrase if you need to. Never copy a whole sentence of theirs. Never start the hook with We, Our or Us.\n3. signals: 2 or 3 signs that they would benefit from bookkeeping software, each tied to something on the site.\n4. fitScore 1-10: 10 when they clearly do bookkeeping at volume, by hand or in spreadsheets.\n\nEMAIL RULES\n1. Maximum 110 words. Plain text. Short paragraphs separated by blank lines. No subject line in the body.\n2. Line 1 is the hook, in your voice. Good: \"Your site says bookkeeping can feel daunting, and most practices feel that at month end.\" Bad: copying their sentence back at them.\n3. Then one problem you believe they have, in their language.\n4. Then one clear ask. Keep the length and the substance of this: {{ $json.offer }}. Do not shorten the call.\n5. End with exactly these two lines, nothing else: DarkLvrd, founder of Corvell Books\n6. Tone: {{ $json.tone }}\n7. Banned: hype words such as seamless, robust, revolutionary, game-changer, unlock, elevate. No bullet points. No em dashes or en dashes. No exclamation marks.\n8. Never invent facts about them, their clients or their results. Never claim you used their product."
+        }
+      },
+      "id": "fc46ef56-224c-4e49-84da-f5e0797295e1",
+      "name": "Brief the company and write the email",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1872,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "low"
+        }
+      },
+      "id": "c2814f46-23df-4651-a4bd-76e184b75af8",
+      "name": "AI model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1760,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"companySummary\": {\n      \"type\": \"string\",\n      \"description\": \"What the company is, in one sentence, from their own site\"\n    },\n    \"whatTheySell\": {\n      \"type\": \"string\",\n      \"description\": \"Their services, in their language\"\n    },\n    \"customerType\": {\n      \"type\": \"string\",\n      \"description\": \"Who they serve, or not stated\"\n    },\n    \"teamSize\": {\n      \"type\": \"string\",\n      \"description\": \"Team size if the site says it, otherwise not stated\"\n    },\n    \"signals\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\": \"Two or three signs they need bookkeeping software, each tied to something on the site\"\n    },\n    \"hook\": {\n      \"type\": \"string\",\n      \"description\": \"One specific detail from their own words, usable as the first line of an email\"\n    },\n    \"fitScore\": {\n      \"type\": \"integer\",\n      \"minimum\": 1,\n      \"maximum\": 10,\n      \"description\": \"Fit for Corvell Books, 10 = definitely does bookkeeping at volume\"\n    },\n    \"fitReason\": {\n      \"type\": \"string\",\n      \"description\": \"Why that score, in one or two sentences\"\n    },\n    \"emailSubject\": {\n      \"type\": \"string\",\n      \"description\": \"Subject line, under 60 characters, no hype\"\n    },\n    \"emailPlain\": {\n      \"type\": \"string\",\n      \"description\": \"Plain text email body, paragraphs separated by blank lines, no subject line, max 120 words\"\n    }\n  },\n  \"required\": [\n    \"companySummary\",\n    \"whatTheySell\",\n    \"customerType\",\n    \"teamSize\",\n    \"signals\",\n    \"hook\",\n    \"fitScore\",\n    \"fitReason\",\n    \"emailSubject\",\n    \"emailPlain\"\n  ]\n}"
+      },
+      "id": "7ab3eab9-5bd0-47a1-a3cf-35ab7a5beedc",
+      "name": "Brief format",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2000,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ '[DEMO -> ' + $('Combine the page text').item.json.company + '] ' + $json.output.emailSubject }}",
+        "message": "={{ 'Intended recipient: ' + $('Combine the page text').item.json.role + ' at ' + $('Combine the page text').item.json.company + '\\nWebsite: ' + $('Combine the page text').item.json.website + '\\n\\nThis is a demo draft. No real person gets this email.\\n\\n-----------------------------------\\n\\n' + $json.output.emailPlain }}",
+        "options": {
+          "sendTo": "={{ $('Corvell Books profile').item.json.demoInbox }}"
+        }
+      },
+      "id": "a16f4cd7-fc2b-4a31-9664-5cea933c05a7",
+      "name": "Save the email as a draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2464,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Corvell Books profile').item.json.telegramChatId }}",
+        "text": "=Draft ready for {{ $('Combine the page text').item.json.company }}. Fit {{ $json.output.fitScore }}/10. Hook: {{ $json.output.hook }}. Pages read: {{ $('Combine the page text').item.json.pagesRead }}. Saved in Gmail drafts.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "eea55f97-5b94-4474-b32a-7841cb093b24",
+      "name": "Ping me when a draft is ready",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2464,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Edit five lines to change the round\nThe list holds five real UK and US bookkeeping practices. Real public websites, read only. No email is sent to them.\n\n**demoMode = true** means every email is saved as a draft in our own inbox.",
+        "height": 224,
+        "width": 160,
+        "color": 5
+      },
+      "id": "cbc2382f-abfb-4d42-a4bc-6ebbeb1b81f3",
+      "name": "Sticky Note eeac9bf5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        448,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Nothing leaves the building\nEvery message becomes a Gmail **draft** to you@example.com.",
+        "height": 224,
+        "width": 160,
+        "color": 4
+      },
+      "id": "65fd120b-dcb2-4945-b095-ab3ee9df337a",
+      "name": "Sticky Note 4436f595",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        624
+      ]
+    }
+  ],
+  "connections": {
+    "Start a research run": {
+      "main": [
+        [
+          {
+            "node": "Corvell Books profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Corvell Books profile": {
+      "main": [
+        [
+          {
+            "node": "Prospect list (edit me)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prospect list (edit me)": {
+      "main": [
+        [
+          {
+            "node": "Read the website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read the website": {
+      "main": [
+        [
+          {
+            "node": "Find the about or services page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find the about or services page": {
+      "main": [
+        [
+          {
+            "node": "Read the second page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read the second page": {
+      "main": [
+        [
+          {
+            "node": "Combine the page text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine the page text": {
+      "main": [
+        [
+          {
+            "node": "Brief the company and write the email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief the company and write the email": {
+      "main": [
+        [
+          {
+            "node": "Save the email as a draft",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Ping me when a draft is ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Brief the company and write the email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief format": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Brief the company and write the email",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
