@@ -1,0 +1,1816 @@
+{
+  "name": "A1 Member concierge — Ostrand Strength (demo)",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "4dac36f6-1237-4e25-a8cb-fee3ee036837",
+      "name": "Member messages the gym",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -720,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "id": "ef46cf29-b42c-4a50-ace6-8937b0db2922",
+      "name": "Show \"typing…\"",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        176,
+        128
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "gp-name",
+              "name": "gymName",
+              "value": "Ostrand Strength",
+              "type": "string"
+            },
+            {
+              "id": "gp-where",
+              "name": "location",
+              "value": "Unit 4, Ostrand Yard, Leeds LS4 (fictional). Free parking, 6 minutes from Burley Park station.",
+              "type": "string"
+            },
+            {
+              "id": "gp-hours",
+              "name": "openingHours",
+              "value": "Mon to Fri 06:00 to 21:30. Sat 08:00 to 14:00. Sun 09:00 to 13:00 (open gym only, no classes).",
+              "type": "string"
+            },
+            {
+              "id": "gp-prices",
+              "name": "prices",
+              "value": "Off-peak membership 39 GBP a month (classes before 16:00 and weekends). Full membership 59 GBP a month (all classes). Drop-in class 12 GBP. First class free for new people. No joining fee.",
+              "type": "string"
+            },
+            {
+              "id": "gp-policies",
+              "name": "policies",
+              "value": "Book up to 7 days ahead. Cancel free of charge up to 2 hours before the class; later than that the spot counts as used. Membership freezes: up to 2 months a year, arranged by staff. Membership cancellation: 30 days notice, arranged by staff. Bring a towel and a water bottle. Under-16s cannot join classes.",
+              "type": "string"
+            },
+            {
+              "id": "gp-tone",
+              "name": "tone",
+              "value": "Warm, short and practical, like a good front-desk coach. British English. Plain text only (no markdown, no asterisks). Never use em dashes or en dashes; use commas or full stops. One emoji at most.",
+              "type": "string"
+            },
+            {
+              "id": "gp-tz",
+              "name": "timezone",
+              "value": "Europe/London",
+              "type": "string"
+            },
+            {
+              "id": "gp-window",
+              "name": "bookingWindowDays",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "gp-late",
+              "name": "lateCancelHours",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "gp-staff",
+              "name": "staffChatId",
+              "value": "YOUR_STAFF_CHAT_ID",
+              "type": "string"
+            },
+            {
+              "id": "gp-reply",
+              "name": "staffReplyTime",
+              "value": "one working day",
+              "type": "string"
+            },
+            {
+              "id": "gp-timetable",
+              "name": "timetable",
+              "type": "array",
+              "value": "[{\"id\": \"mon-0700-barbell\", \"day\": \"mon\", \"time\": \"07:00\", \"name\": \"Barbell Basics\", \"coach\": \"Coach Ines\", \"minutes\": 60, \"capacity\": 10}, {\"id\": \"mon-1830-strength\", \"day\": \"mon\", \"time\": \"18:30\", \"name\": \"Strength Club\", \"coach\": \"Coach Dami\", \"minutes\": 75, \"capacity\": 12}, {\"id\": \"tue-0630-kettlebell\", \"day\": \"tue\", \"time\": \"06:30\", \"name\": \"Kettlebell Conditioning\", \"coach\": \"Coach Ines\", \"minutes\": 45, \"capacity\": 12}, {\"id\": \"tue-1900-mobility\", \"day\": \"tue\", \"time\": \"19:00\", \"name\": \"Mobility and Stretch\", \"coach\": \"Coach Priya\", \"minutes\": 45, \"capacity\": 14}, {\"id\": \"wed-0700-barbell\", \"day\": \"wed\", \"time\": \"07:00\", \"name\": \"Barbell Basics\", \"coach\": \"Coach Ines\", \"minutes\": 60, \"capacity\": 10}, {\"id\": \"wed-1830-oly\", \"day\": \"wed\", \"time\": \"18:30\", \"name\": \"Olympic Lifting Lab\", \"coach\": \"Coach Tomasz\", \"minutes\": 75, \"capacity\": 6}, {\"id\": \"thu-0630-kettlebell\", \"day\": \"thu\", \"time\": \"06:30\", \"name\": \"Kettlebell Conditioning\", \"coach\": \"Coach Ines\", \"minutes\": 45, \"capacity\": 12}, {\"id\": \"thu-1900-strength\", \"day\": \"thu\", \"time\": \"19:00\", \"name\": \"Strength Club\", \"coach\": \"Coach Dami\", \"minutes\": 75, \"capacity\": 12}, {\"id\": \"fri-0700-engine\", \"day\": \"fri\", \"time\": \"07:00\", \"name\": \"Engine Room\", \"coach\": \"Coach Priya\", \"minutes\": 45, \"capacity\": 12}, {\"id\": \"sat-0900-team\", \"day\": \"sat\", \"time\": \"09:00\", \"name\": \"Saturday Team Session\", \"coach\": \"Coach Dami\", \"minutes\": 60, \"capacity\": 16}, {\"id\": \"sat-1030-mobility\", \"day\": \"sat\", \"time\": \"10:30\", \"name\": \"Mobility and Stretch\", \"coach\": \"Coach Priya\", \"minutes\": 45, \"capacity\": 14}]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e1db9f86-940a-4a80-a7c9-ff4544d30992",
+      "name": "Gym profile",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Member name: {{ $('Member messages the gym').item.json.message.from.first_name || 'Member' }}\nRight now: {{ $now.setZone($json.timezone).toFormat('cccc d LLLL yyyy, HH:mm') }} ({{ $json.timezone }})\nDates this week: {{ Array.from({ length: 8 }, (x, i) => $now.setZone($json.timezone).plus({ days: i })).map(d => d.toFormat('cccc d LLL') + ' = ' + d.toISODate()).join(' | ') }}\n\nMember's message:\n{{ $('Member messages the gym').item.json.message.text || $('Member messages the gym').item.json.message.caption || '(the member sent a photo, sticker or file with no text)' }}",
+        "options": {
+          "systemMessage": "=You are the front desk of {{ $json.gymName }}, a strength and conditioning gym. Members message you on Telegram.\n\nABOUT THE GYM\nWhere: {{ $json.location }}\nOpening hours: {{ $json.openingHours }}\nPrices: {{ $json.prices }}\nPolicies: {{ $json.policies }}\n\nWEEKLY CLASS TIMETABLE (these are the only classes that exist)\n{{ $json.timetable.map(c => '- ' + c.day.toUpperCase() + ' ' + c.time + ' ' + c.name + ' with ' + c.coach + ', ' + c.minutes + ' min, ' + c.capacity + ' spots (class_id ' + c.id + ')').join(String.fromCharCode(10)) }}\n\nYOUR TOOLS\n- Check_availability: live spots left. Call it before you say whether a session has space.\n- Book_a_class: needs class_id and class_date (YYYY-MM-DD). Work the date out from \"Dates this week\" in the message. If exactly one session fits what the member asked, book it. If several fit, ask which one.\n- See_my_bookings: the member's upcoming bookings and refs.\n- Cancel_a_booking: cancels a class booking by ref, or by class_id + class_date. If unsure which one, call See_my_bookings first.\n- Hand_to_staff: logs a ticket and alerts a person.\n\nRULES (never break these)\n1. Only state classes, times, coaches, prices and policies written above. Never invent a class, a time, a discount or an offer. If you do not know, say so and offer to pass it to staff.\n2. Only say a booking or cancellation is done when the tool replied BOOKED or CANCELLED. If it replied NOT BOOKED, FULL or NOT CANCELLED, say so plainly and offer the open alternatives it listed. Always give the booking ref after a booking.\n3. Always use Hand_to_staff (then tell the member a person will reply, with the ticket ref) for: membership freezes, membership cancellations, complaints, any injury, pain or medical issue, and anything about money (refunds, charges, payments). Cancelling a class booking is not the same as cancelling a membership.\n4. Never promise a refund, credit, waiver, exception or any outcome. Say the staff team will look at it.\n5. Injury or pain: do not give medical or training advice. Say you are sorry to hear it, suggest a qualified professional (or emergency services if it sounds serious), and hand to staff with topic injury.\n6. If the member is upset or rude, stay calm and kind, and offer to pass it to staff.\n7. Never ask for card details or passwords. Never share another member's details.\n8. Commands: /start = greet them by first name and say in one line what you can do (class times, book, cancel, see bookings, reach staff). /classes = show the timetable grouped by day. /mybookings = call See_my_bookings. /staff = ask what it is about, then hand off.\n9. Style: {{ $json.tone }} Keep replies under 90 words unless you are listing classes. Use the member's first name now and then, not in every message, and never say welcome back. Never show class_id codes or chat ids to the member; they are for tools only.\n10. Only offer things your tools can do. Do not offer priorities, callbacks, discounts, waitlists or reminders.\n11. If asked whether the gym is real: Ostrand Strength is a fictional gym used to demo a real automation built by Dark Century Studios.",
+          "maxIterations": 8
+        }
+      },
+      "id": "7f57b7c1-b396-4982-b372-a555f3032ac3",
+      "name": "Ostrand concierge",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        704,
+        224
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "options": {
+          "reasoningEffort": "low"
+        }
+      },
+      "id": "f3b33c72-08f3-4f6e-91b4-f9a0de1d4ebb",
+      "name": "AI model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Member messages the gym').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "id": "2135fd78-38e3-4c36-9e04-824b16c25ed5",
+      "name": "Remember the last 10 turns",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        640,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Live spots left for upcoming sessions in the booking window. Leave class_id and class_date empty to see the whole week, or fill either to narrow it down.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "action": "check_availability",
+            "profile": "={{ JSON.stringify($('Gym profile').first().json) }}",
+            "chat_id": "={{ String($('Member messages the gym').first().json.message.chat.id) }}",
+            "member_name": "={{ [$('Member messages the gym').first().json.message.from.first_name, $('Member messages the gym').first().json.message.from.last_name].filter(Boolean).join(' ') }}",
+            "class_id": "={{ $fromAI('class_id', `Optional. A class_id from the timetable, e.g. sat-0900-team. Empty for all classes.`, 'string') }}",
+            "class_date": "={{ $fromAI('class_date', `Optional. Date as YYYY-MM-DD. Empty for every day.`, 'string') }}",
+            "booking_ref": "",
+            "topic": "",
+            "summary": ""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "profile",
+              "displayName": "profile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "6a55f204-75f3-4e1f-ac42-ed8db3550e0f",
+      "name": "Check availability",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Books the member into one session. Needs the exact class_id and the date. Replies BOOKED with a ref, or NOT BOOKED / FULL with the reason and open alternatives.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "action": "book_class",
+            "profile": "={{ JSON.stringify($('Gym profile').first().json) }}",
+            "chat_id": "={{ String($('Member messages the gym').first().json.message.chat.id) }}",
+            "member_name": "={{ [$('Member messages the gym').first().json.message.from.first_name, $('Member messages the gym').first().json.message.from.last_name].filter(Boolean).join(' ') }}",
+            "class_id": "={{ $fromAI('class_id', `Required. class_id from the timetable, e.g. thu-1900-strength.`, 'string') }}",
+            "class_date": "={{ $fromAI('class_date', `Required. Session date as YYYY-MM-DD, taken from \"Dates this week\".`, 'string') }}",
+            "booking_ref": "",
+            "topic": "",
+            "summary": ""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "profile",
+              "displayName": "profile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "379acc47-4495-4b96-9f1b-362568993efd",
+      "name": "Book a class",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        928,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Lists this member's upcoming bookings with their refs.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "action": "my_bookings",
+            "profile": "={{ JSON.stringify($('Gym profile').first().json) }}",
+            "chat_id": "={{ String($('Member messages the gym').first().json.message.chat.id) }}",
+            "member_name": "={{ [$('Member messages the gym').first().json.message.from.first_name, $('Member messages the gym').first().json.message.from.last_name].filter(Boolean).join(' ') }}",
+            "class_id": "",
+            "class_date": "",
+            "booking_ref": "",
+            "topic": "",
+            "summary": ""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "profile",
+              "displayName": "profile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "eaa2dab1-338d-412d-8114-f777748a3374",
+      "name": "See my bookings",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Cancels one of the member's own class bookings (not a membership). Give booking_ref if known, otherwise class_id and class_date.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "action": "cancel_booking",
+            "profile": "={{ JSON.stringify($('Gym profile').first().json) }}",
+            "chat_id": "={{ String($('Member messages the gym').first().json.message.chat.id) }}",
+            "member_name": "={{ [$('Member messages the gym').first().json.message.from.first_name, $('Member messages the gym').first().json.message.from.last_name].filter(Boolean).join(' ') }}",
+            "class_id": "={{ $fromAI('class_id', `class_id of the booking to cancel, or empty.`, 'string') }}",
+            "class_date": "={{ $fromAI('class_date', `Date of the booking as YYYY-MM-DD, or empty.`, 'string') }}",
+            "booking_ref": "={{ $fromAI('booking_ref', `Booking ref like OS-AB12, or empty.`, 'string') }}",
+            "topic": "",
+            "summary": ""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "profile",
+              "displayName": "profile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "99fc336c-e535-4c72-81bf-1473964dd486",
+      "name": "Cancel a booking",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Creates a staff ticket and alerts a human. Use for freezes, membership cancellations, complaints, injuries or pain, money questions, and anything you cannot answer from your instructions.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "action": "hand_to_staff",
+            "profile": "={{ JSON.stringify($('Gym profile').first().json) }}",
+            "chat_id": "={{ String($('Member messages the gym').first().json.message.chat.id) }}",
+            "member_name": "={{ [$('Member messages the gym').first().json.message.from.first_name, $('Member messages the gym').first().json.message.from.last_name].filter(Boolean).join(' ') }}",
+            "class_id": "",
+            "class_date": "",
+            "booking_ref": "",
+            "topic": "={{ $fromAI('topic', `One of: freeze, membership_cancellation, complaint, injury, billing, other.`, 'string') }}",
+            "summary": "={{ $fromAI('summary', `One to three sentences in the third person with the facts staff need, e.g. \"Sam wants to freeze for 6 weeks from 1 Dec because of travel.\"`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "profile",
+              "displayName": "profile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "2f99d13e-5a1d-4018-b382-5d0ffec441d7",
+      "name": "Hand to staff",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Member messages the gym').item.json.message.chat.id }}",
+        "text": "={{ String($json.output || '').replace(/ ?[—–] ?/g, ', ').replace(/, ,/g, ',').replace(/[_*`\\[\\]]/g, '') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "e489e54d-03fa-449a-b3a2-1897a0fce46c",
+      "name": "Reply to the member",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1904,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Member messages the gym').item.json.message.chat.id }}",
+        "text": "Sorry, I could not process that just now. Please try again in a minute, or type \"staff\" and a person will get back to you.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "bf7ac3ef-9c60-4076-8c20-fb862fda5941",
+      "name": "If the AI fails, say sorry",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1888,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "action"
+            },
+            {
+              "name": "profile"
+            },
+            {
+              "name": "chat_id"
+            },
+            {
+              "name": "member_name"
+            },
+            {
+              "name": "class_id"
+            },
+            {
+              "name": "class_date"
+            },
+            {
+              "name": "booking_ref"
+            },
+            {
+              "name": "topic"
+            },
+            {
+              "name": "summary"
+            }
+          ]
+        }
+      },
+      "id": "831bf927-b1d2-43dc-819c-e7c6c23642dd",
+      "name": "Tool call from the concierge",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -112,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "axilVKEsP8zZ5DEv",
+          "cachedResultName": "Ostrand Bookings (A1 demo)"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "keyValue": "booked"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "id": "845ee3fb-9317-45d1-ab10-de135c9efb32",
+      "name": "Read live bookings",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        992
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Front desk rules — the back office every tool call runs through.\n// Input: one call from the concierge (action + fields) and the live bookings.\n// Output: one item { op, reply, ... } that the Switch routes to the right table.\nconst NL = String.fromCharCode(10);\nconst call = $('Tool call from the concierge').first().json;\nconst profile = typeof call.profile === 'string' ? JSON.parse(call.profile || '{}') : (call.profile || {});\nconst tz = profile.timezone || 'Europe/London';\nconst classes = Array.isArray(profile.timetable) ? profile.timetable : JSON.parse(profile.timetable || '[]');\nconst windowDays = Number(profile.bookingWindowDays || 7);\nconst lateHours = Number(profile.lateCancelHours || 2);\nconst rows = $input.all().map(function (i) { return i.json; }).filter(function (r) { return r && r.booking_ref; });\nconst now = DateTime.now().setZone(tz);\nconst dayCodes = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];\n\nconst action = String(call.action || '').trim();\nconst chatId = String(call.chat_id || '').trim();\nconst memberName = String(call.member_name || 'Member').trim();\nconst askedClass = String(call.class_id || '').trim().toLowerCase();\nconst askedDate = String(call.class_date || '').trim().slice(0, 10);\nconst askedRef = String(call.booking_ref || '').trim().toUpperCase();\n\nfunction findClass(id) {\n  return classes.find(function (c) { return c.id === id; });\n}\nfunction startOf(c, isoDate) {\n  return DateTime.fromISO(isoDate + 'T' + c.time, { zone: tz });\n}\nfunction taken(c, isoDate) {\n  return rows.filter(function (r) { return r.class_id === c.id && r.class_date === isoDate && r.status === 'booked'; }).length;\n}\nfunction label(c, isoDate) {\n  return c.name + ', ' + startOf(c, isoDate).toFormat('cccc d LLLL') + ' at ' + c.time;\n}\n// Every session from now until the end of the booking window.\nfunction upcoming() {\n  const out = [];\n  for (let i = 0; i <= windowDays; i++) {\n    const day = now.startOf('day').plus({ days: i });\n    const code = dayCodes[day.weekday - 1];\n    classes.forEach(function (c) {\n      if (c.day !== code) return;\n      const iso = day.toISODate();\n      if (startOf(c, iso) <= now) return;\n      out.push({ c: c, date: iso, left: Math.max(0, c.capacity - taken(c, iso)) });\n    });\n  }\n  return out;\n}\nfunction newRef(prefix) {\n  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';\n  let ref = '';\n  do {\n    ref = prefix;\n    for (let i = 0; i < 4; i++) ref += chars[Math.floor(Math.random() * chars.length)];\n  } while (rows.some(function (r) { return r.booking_ref === ref; }));\n  return ref;\n}\nfunction mine() {\n  return rows.filter(function (r) {\n    if (r.chat_id !== chatId || r.status !== 'booked') return false;\n    const c = findClass(r.class_id);\n    return c ? startOf(c, r.class_date) > now : true;\n  });\n}\nfunction done(result) {\n  return [{ json: Object.assign({ op: 'reply', staffChatId: profile.staffChatId || '' }, result), pairedItem: { item: 0 } }];\n}\n\n// ---------- check_availability ----------\nif (action === 'check_availability') {\n  let list = upcoming();\n  if (askedClass) list = list.filter(function (s) { return s.c.id === askedClass || s.c.name.toLowerCase().indexOf(askedClass) > -1; });\n  if (askedDate) list = list.filter(function (s) { return s.date === askedDate; });\n  if (!list.length) return done({ reply: 'No sessions match that in the next ' + windowDays + ' days. Use only the timetable in your instructions to suggest another option.' });\n  const lines = list.map(function (s) {\n    return '- ' + label(s.c, s.date) + ' | class_id ' + s.c.id + ' | class_date ' + s.date + ' | ' + (s.left ? s.left + ' of ' + s.c.capacity + ' spots left' : 'FULL');\n  });\n  return done({ reply: 'Live availability:' + NL + lines.join(NL) });\n}\n\n// ---------- my_bookings ----------\nif (action === 'my_bookings') {\n  const list = mine();\n  if (!list.length) return done({ reply: memberName + ' has no upcoming bookings.' });\n  return done({\n    reply: memberName + ' has ' + list.length + ' upcoming booking(s):' + NL + list.map(function (r) {\n      return '- ' + r.class_name + ', ' + DateTime.fromISO(r.class_date).toFormat('cccc d LLLL') + ' at ' + r.class_time + ' (ref ' + r.booking_ref + ')';\n    }).join(NL)\n  });\n}\n\n// ---------- book_class ----------\nif (action === 'book_class') {\n  const c = findClass(askedClass);\n  if (!c) return done({ reply: 'NOT BOOKED. Unknown class_id \"' + askedClass + '\". Valid ids: ' + classes.map(function (x) { return x.id; }).join(', ') });\n  if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(askedDate)) return done({ reply: 'NOT BOOKED. class_date must look like 2026-11-28.' });\n  const d = DateTime.fromISO(askedDate, { zone: tz });\n  if (dayCodes[d.weekday - 1] !== c.day) return done({ reply: 'NOT BOOKED. ' + c.name + ' (' + c.id + ') does not run on ' + d.toFormat('cccc d LLLL') + '. It runs on ' + c.day + ' at ' + c.time + '.' });\n  if (startOf(c, askedDate) <= now) return done({ reply: 'NOT BOOKED. That session has already started or finished.' });\n  if (startOf(c, askedDate) > now.plus({ days: windowDays + 1 })) return done({ reply: 'NOT BOOKED. Bookings open ' + windowDays + ' days ahead. Ask the member to try again closer to the date.' });\n  const already = mine().find(function (r) { return r.class_id === c.id && r.class_date === askedDate; });\n  if (already) return done({ reply: 'ALREADY BOOKED. ' + memberName + ' already has ' + label(c, askedDate) + ' (ref ' + already.booking_ref + ').' });\n  if (taken(c, askedDate) >= c.capacity) {\n    const own = mine();\n    const others = upcoming().filter(function (s) {\n      const alreadyMine = own.some(function (r) { return r.class_id === s.c.id && r.class_date === s.date; });\n      return s.left > 0 && !alreadyMine && (s.c.id === c.id || s.date === askedDate);\n    }).slice(0, 4);\n    return done({\n      reply: 'NOT BOOKED. FULL: ' + label(c, askedDate) + ' has all ' + c.capacity + ' spots taken.' +\n        (others.length ? NL + 'Open alternatives:' + NL + others.map(function (s) { return '- ' + label(s.c, s.date) + ' | class_id ' + s.c.id + ' | class_date ' + s.date + ' | ' + s.left + ' left'; }).join(NL) : '')\n    });\n  }\n  const ref = newRef('OS-');\n  const left = c.capacity - taken(c, askedDate) - 1;\n  return done({\n    op: 'book',\n    row: { booking_ref: ref, chat_id: chatId, member_name: memberName, class_id: c.id, class_name: c.name, class_date: askedDate, class_time: c.time, status: 'booked' },\n    reply: 'BOOKED. ' + label(c, askedDate) + ' with ' + c.coach + '. Ref ' + ref + '. ' + left + ' spot(s) left. Free cancellation until ' + lateHours + ' hours before the start.'\n  });\n}\n\n// ---------- cancel_booking ----------\nif (action === 'cancel_booking') {\n  const list = mine();\n  let hit = askedRef ? list.find(function (r) { return r.booking_ref === askedRef; }) : null;\n  if (!hit && askedClass) {\n    const matches = list.filter(function (r) { return r.class_id === askedClass && (!askedDate || r.class_date === askedDate); });\n    if (matches.length === 1) hit = matches[0];\n    if (matches.length > 1) return done({ reply: 'NOT CANCELLED. More than one booking matches. Ask which date: ' + matches.map(function (r) { return r.class_date + ' (ref ' + r.booking_ref + ')'; }).join(', ') });\n  }\n  if (!hit) return done({ reply: 'NOT CANCELLED. No matching upcoming booking for ' + memberName + '. Their bookings: ' + (list.length ? list.map(function (r) { return r.class_name + ' ' + r.class_date + ' ' + r.class_time + ' (ref ' + r.booking_ref + ')'; }).join('; ') : 'none') });\n  const c = findClass(hit.class_id);\n  const hoursToGo = c ? startOf(c, hit.class_date).diff(now, 'hours').hours : 99;\n  const late = hoursToGo < lateHours;\n  return done({\n    op: 'cancel',\n    cancelRef: hit.booking_ref,\n    newStatus: late ? 'cancelled-late' : 'cancelled',\n    reply: 'CANCELLED. ' + hit.class_name + ', ' + DateTime.fromISO(hit.class_date).toFormat('cccc d LLLL') + ' at ' + hit.class_time + ' (ref ' + hit.booking_ref + '). The spot is free for someone else.' +\n      (late ? ' This was inside the ' + lateHours + '-hour window, so it counts as a late cancellation. Do not promise any refund or waiver; staff decide that.' : '')\n  });\n}\n\n// ---------- hand_to_staff ----------\nif (action === 'hand_to_staff') {\n  const topic = String(call.topic || 'other').trim().toLowerCase();\n  const summary = String(call.summary || '').trim() || '(no summary given)';\n  const ref = newRef('T-');\n  const urgent = ['injury', 'complaint', 'billing'].indexOf(topic) > -1;\n  return done({\n    op: 'ticket',\n    ticket: { ticket_ref: ref, chat_id: chatId, member_name: memberName, topic: topic, summary: summary, status: 'handed off' },\n    staffText: (urgent ? '🔴 ' : '🟡 ') + 'STAFF HANDOFF ' + ref + NL +\n      'Member: ' + memberName + NL +\n      'Topic: ' + topic + NL +\n      'Summary: ' + summary + NL +\n      'Reply to them on Telegram chat ' + chatId + '.' + NL +\n      '(Ostrand Strength demo. Fictional gym, real automation.)',\n    reply: 'HANDED OFF. Ticket ' + ref + ' (' + topic + ') is with the staff team, who reply within ' + (profile.staffReplyTime || 'one working day') + '. Do not promise any outcome.'\n  });\n}\n\nreturn done({ reply: 'Unknown action \"' + action + '\".' });\n"
+      },
+      "id": "ad69cdef-5f00-4844-9f1d-069fc362ec55",
+      "name": "Front desk rules",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.op }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "book"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "new booking"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.op }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "cancel"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "cancellation"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.op }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "ticket"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "staff handoff"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "just an answer"
+        }
+      },
+      "id": "c3607800-3782-481c-becc-48e0d825b89d",
+      "name": "What needs saving?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        864,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "axilVKEsP8zZ5DEv",
+          "cachedResultName": "Ostrand Bookings (A1 demo)"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "booking_ref": "={{ $json.row.booking_ref }}",
+            "chat_id": "={{ $json.row.chat_id }}",
+            "member_name": "={{ $json.row.member_name }}",
+            "class_id": "={{ $json.row.class_id }}",
+            "class_name": "={{ $json.row.class_name }}",
+            "class_date": "={{ $json.row.class_date }}",
+            "class_time": "={{ $json.row.class_time }}",
+            "status": "={{ $json.row.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_name",
+              "displayName": "class_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_time",
+              "displayName": "class_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "64580a4f-df8d-4daa-a4d8-a8b7188c0281",
+      "name": "Save the booking",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1136,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ta-r",
+              "name": "response",
+              "value": "={{ $('Front desk rules').first().json.reply }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7d8247bc-3d6c-4c1d-8767-c77e818287fc",
+      "name": "Answer back to the concierge",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1728,
+        944
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "axilVKEsP8zZ5DEv",
+          "cachedResultName": "Ostrand Bookings (A1 demo)"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "booking_ref",
+              "keyValue": "={{ $json.cancelRef }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.newStatus }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "booking_ref",
+              "displayName": "booking_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_id",
+              "displayName": "class_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_name",
+              "displayName": "class_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_date",
+              "displayName": "class_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_time",
+              "displayName": "class_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cda00cd9-aae9-4673-b376-87d314be48b8",
+      "name": "Mark the booking cancelled",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1136,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "J9gIEsWHPJEDhTBG",
+          "cachedResultName": "Ostrand Tickets (A1 demo)"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ticket_ref": "={{ $json.ticket.ticket_ref }}",
+            "chat_id": "={{ $json.ticket.chat_id }}",
+            "member_name": "={{ $json.ticket.member_name }}",
+            "topic": "={{ $json.ticket.topic }}",
+            "summary": "={{ $json.ticket.summary }}",
+            "status": "={{ $json.ticket.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ticket_ref",
+              "displayName": "ticket_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "member_name",
+              "displayName": "member_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2ffe5ae9-70cf-479e-8e2d-e21f6d7161bb",
+      "name": "Log the staff ticket",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1136,
+        1152
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Front desk rules').item.json.staffChatId }}",
+        "text": "={{ String($('Front desk rules').item.json.staffText || '').replace(/[_*`\\[\\]]/g, ' ') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "f85cbba3-e8dc-420f-b287-cadb62162a91",
+      "name": "Alert the staff chat",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1376,
+        1152
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Change this one box for another business\n**Gym profile** holds the timetable, prices, rules, tone and the staff chat. Swap it and the same automation runs a yoga studio, a climbing wall or a physio clinic.",
+        "height": 220,
+        "width": 340,
+        "color": 5
+      },
+      "id": "1d2095c8-0cbf-4d1e-a4d2-7b5db22259f9",
+      "name": "Sticky Note 43a1cbcf",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Back office\nEvery tool the concierge uses lands here. **Front desk rules** checks the real timetable, capacity, the booking window and the 2-hour cancel rule, so the AI can never invent a class or overbook one.",
+        "height": 152,
+        "width": 384,
+        "color": 4
+      },
+      "id": "32f934b8-3de4-452b-ad43-f711008c1725",
+      "name": "Sticky Note 48475e7f",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        816
+      ]
+    },
+    {
+      "id": "af3c1d8c-4d2f-4985-973d-e1c43fb4afc1",
+      "name": "Private chats only",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -480,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "5a6e657c-bcd0-4d9f-8d6d-009145006287",
+              "leftValue": "={{ $json.message.chat.type }}",
+              "rightValue": "private",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "e351d53f-93dd-4aa6-96f6-3c07c615798b",
+              "leftValue": "={{ $json.message.from.is_bot }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "1dcfcd78-499b-4c9a-a697-3822c165a506",
+      "name": "Count today's messages",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Public demo guard: at most 60 member messages a day, so strangers cannot use up the trial.\nconst state = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().slice(0, 10);\nif (state.day !== today) { state.day = today; state.count = 0; }\nstate.count = (state.count || 0) + 1;\nconst underLimit = state.count <= 60;\nreturn $input.all().map(function (item, i) {\n  return { json: Object.assign({}, item.json, { underLimit: underLimit, todayCount: state.count }), pairedItem: { item: i } };\n});"
+      }
+    },
+    {
+      "id": "4a1bdedf-676d-4784-8570-afadf7745a82",
+      "name": "Under the daily limit?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "9afe6874-aae8-40e0-aef5-ba05b7ca8216",
+              "leftValue": "={{ $json.underLimit }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "321e3b2c-7cab-4273-85a3-cb821d5d9214",
+      "name": "Daily limit reached",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        440
+      ],
+      "parameters": {
+        "chatId": "={{ $('Member messages the gym').item.json.message.chat.id }}",
+        "text": "Thanks for trying the Ostrand Strength demo. It has reached its limit for today, so please try again tomorrow. (Ostrand Strength is a fictional gym used to demo a real automation by Dark Century Studios.)",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Member messages the gym": {
+      "main": [
+        [
+          {
+            "node": "Private chats only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gym profile": {
+      "main": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ostrand concierge": {
+      "main": [
+        [
+          {
+            "node": "Reply to the member",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If the AI fails, say sorry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remember the last 10 turns": {
+      "ai_memory": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book a class": {
+      "ai_tool": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "See my bookings": {
+      "ai_tool": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancel a booking": {
+      "ai_tool": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hand to staff": {
+      "ai_tool": [
+        [
+          {
+            "node": "Ostrand concierge",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool call from the concierge": {
+      "main": [
+        [
+          {
+            "node": "Read live bookings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read live bookings": {
+      "main": [
+        [
+          {
+            "node": "Front desk rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Front desk rules": {
+      "main": [
+        [
+          {
+            "node": "What needs saving?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "What needs saving?": {
+      "main": [
+        [
+          {
+            "node": "Save the booking",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark the booking cancelled",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log the staff ticket",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Answer back to the concierge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save the booking": {
+      "main": [
+        [
+          {
+            "node": "Answer back to the concierge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark the booking cancelled": {
+      "main": [
+        [
+          {
+            "node": "Answer back to the concierge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log the staff ticket": {
+      "main": [
+        [
+          {
+            "node": "Alert the staff chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert the staff chat": {
+      "main": [
+        [
+          {
+            "node": "Answer back to the concierge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Private chats only": {
+      "main": [
+        [
+          {
+            "node": "Count today's messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count today's messages": {
+      "main": [
+        [
+          {
+            "node": "Under the daily limit?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Under the daily limit?": {
+      "main": [
+        [
+          {
+            "node": "Show \"typing…\"",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gym profile",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Daily limit reached",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodeGroups": [
+    {
+      "id": "e2083332-ec05-49ea-99b6-7e5c736c419e",
+      "name": "The concierge (AI agent + its tools)",
+      "nodeIds": [
+        "7f57b7c1-b396-4982-b372-a555f3032ac3",
+        "f3b33c72-08f3-4f6e-91b4-f9a0de1d4ebb",
+        "2135fd78-38e3-4c36-9e04-824b16c25ed5",
+        "6a55f204-75f3-4e1f-ac42-ed8db3550e0f",
+        "379acc47-4495-4b96-9f1b-362568993efd",
+        "eaa2dab1-338d-412d-8114-f777748a3374",
+        "99fc336c-e535-4c72-81bf-1473964dd486",
+        "2f99d13e-5a1d-4018-b382-5d0ffec441d7"
+      ],
+      "description": "Reads the message, remembers the last 10 turns, and calls a tool whenever it needs live data or has to change something"
+    },
+    {
+      "id": "de034913-4e80-4add-9d85-b72c3825acf9",
+      "name": "Back office",
+      "nodeIds": [
+        "845ee3fb-9317-45d1-ab10-de135c9efb32",
+        "ad69cdef-5f00-4844-9f1d-069fc362ec55",
+        "c3607800-3782-481c-becc-48e0d825b89d",
+        "64580a4f-df8d-4daa-a4d8-a8b7188c0281",
+        "cda00cd9-aae9-4673-b376-87d314be48b8",
+        "2ffe5ae9-70cf-479e-8e2d-e21f6d7161bb",
+        "f85cbba3-e8dc-420f-b287-cadb62162a91",
+        "7d8247bc-3d6c-4c1d-8767-c77e818287fc"
+      ],
+      "description": "Checks the rules against live bookings, then saves a booking, marks a cancellation or logs a ticket and pings the staff chat"
+    }
+  ]
+}
